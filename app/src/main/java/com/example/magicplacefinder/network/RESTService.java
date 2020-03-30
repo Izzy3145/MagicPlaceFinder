@@ -9,5 +9,7 @@ import retrofit2.http.Query;
 public interface RESTService {
 
     @GET("nearbysearch/json")
-    Call<NearbyResponse> getPlaces(@Query("location") String location, @Query("type") String type, @Query("rankby") String rankby, @Query("key") String key);
+    Call<NearbyResponse> getPlaces(@Query("location") String location, @Query("type") String type,
+                                   @Query("keyword") String keyword,
+                                   @Query("rankby") String rankby, @Query("key") String key);
 }

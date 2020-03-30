@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -11,17 +12,31 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    def props = new Properties()
+    file("secret.keys").withInputStream { props.load(it) }
+    def PLACES_API_KEY = props.getProperty("placesAPIKey")
+
+
+
     buildTypes {
 
         debug {
             applicationIdSuffix ".debug"
             buildConfigField "String", "ROOT_URL", "\"https://maps.googleapis.com/maps/api/place/\""
+            buildConfigField "String", "PLACES_API_KEY", PLACES_API_KEY
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
         release {
             buildConfigField "String", "ROOT_URL", "\"https://maps.googleapis.com/maps/api/place/\""
+            buildConfigField "String", "PLACES_API_KEY", PLACES_API_KEY
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -34,6 +49,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'android.arch.lifecycle:extensions:1.1.1'
+    implementation 'org.apache.commons:commons-lang3:3.9'
+
 
     //rest service and gson converter
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'
