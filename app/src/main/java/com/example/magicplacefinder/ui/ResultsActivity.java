@@ -53,7 +53,9 @@ public class ResultsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if(shouldSearch){
+
             //pass event to view model
+
         }
     }
 

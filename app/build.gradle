@@ -12,7 +12,16 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+
+        debug {
+            applicationIdSuffix ".debug"
+            buildConfigField "String", "ROOT_URL", "\"https://maps.googleapis.com/maps/api/place/\""
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
         release {
+            buildConfigField "String", "ROOT_URL", "\"https://maps.googleapis.com/maps/api/place/\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -26,6 +35,11 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'android.arch.lifecycle:extensions:1.1.1'
 
+    //rest service and gson converter
+    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation("com.squareup.okhttp3:logging-interceptor:4.2.1")
 
 
 
