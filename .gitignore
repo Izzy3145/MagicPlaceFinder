@@ -1,6 +1,6 @@
 *.iml
 .gradle
-/secret.keys
+/secret.key
 /local.properties
 /.idea/caches
 /.idea/libraries
