@@ -19,7 +19,7 @@ android {
     }
 
     def props = new Properties()
-    file("secret.keys").withInputStream { props.load(it) }
+    file("secret.key").withInputStream { props.load(it) }
     def PLACES_API_KEY = props.getProperty("placesAPIKey")
 
 
