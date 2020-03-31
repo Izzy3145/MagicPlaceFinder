@@ -6,12 +6,15 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 import com.example.magicplacefinder.R;
+import com.example.magicplacefinder.adapter.PlacesAdapter;
 import com.example.magicplacefinder.models.LatLng;
 import com.example.magicplacefinder.models.SearchRequest;
 import com.example.magicplacefinder.models.SearchState;
@@ -20,6 +23,7 @@ import com.example.magicplacefinder.models.responses.PlaceResponse;
 import com.example.magicplacefinder.utils.Constants;
 import com.example.magicplacefinder.viewmodel.PlacesViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -29,19 +33,22 @@ public class ResultsActivity extends AppCompatActivity {
     private static final String TAG = ResultsActivity.class.getSimpleName();
     private static final String CURRENT_SEARCH = "Current search";
     private static final String CURRENT_LATLNG = "Current latlng";
-
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private PlacesAdapter adapter;
     PlacesViewModel mViewModel;
     TextView resultsTv;
-    boolean shouldSearch = false;
     SearchRequest currentSearchCritera;
     LatLng currentLatLng;
+    boolean shouldSearch = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
         resultsTv = findViewById(R.id.results_tv);
-
+        recyclerView = findViewById(R.id.places_rv);
         mViewModel = new ViewModelProvider(this, new ViewModelProvider.Factory() {
             @NonNull
             @Override
@@ -68,7 +75,13 @@ public class ResultsActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-    }
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        adapter = new PlacesAdapter(this, new ArrayList<PlaceResponse>(0));
+        recyclerView.setAdapter(adapter);
+
+}
 
     @Override
     protected void onStart() {
@@ -136,10 +149,9 @@ public class ResultsActivity extends AppCompatActivity {
     }
 
     private void updateAdapter(List<PlaceResponse> placeResponses){
-
+        ArrayList<PlaceResponse> placesArray = new ArrayList<>(placeResponses);
+        adapter.updateAdapter(placesArray);
     }
-
-
 
     @Override
     protected void onStop() {

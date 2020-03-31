@@ -41,7 +41,6 @@ public class SearchActivity extends AppCompatActivity {
         keywordEntry = findViewById(R.id.keyword_et);
         rootLayout = findViewById(R.id.search_root);
 
-
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

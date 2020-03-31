@@ -20,5 +20,10 @@
     <string name="keyword_label">Keyword:</string>
     <string name="keyword_hint">e.g. surf</string>
 
+    <string name="name">Name: %1$s</string>
+    <string name="opening_hours">Opening hours: %1$s</string>
+    <string name="rating">Rating: %1$s</string>
+
+
 
 </resources>
