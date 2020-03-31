@@ -125,38 +125,15 @@ public class ResultsActivity extends AppCompatActivity {
 
     }
 
-
-
-
-
     @Override
     protected void onResume() {
         super.onResume();
         if(shouldSearch){
-            LatLng latLng = new LatLng(50.412524, -5.1119065);
+            LatLng latLng = new LatLng(51.7073855, -0.6104911);
             String latLangString = latLng.toString();
             Log.i(TAG, "Latitude and longitude: " + latLng);
-            SearchRequest searchRequest = new SearchRequest(latLng, "Shop", "surf", "50");
-            //mViewModel.search(searchRequest);
-            fetchPlaceDetailsFollowingGeneralPlaceInfo(searchRequest, new RequestListener() {
-                @Override
-                public void onResultsFound(List<PlaceResponse> results) {
-                    Log.i(TAG, "fetchPlaceDetailsFollowingGeneralPlaceInfo RESULTS FOUND");
-
-                }
-
-                @Override
-                public void onApiCallFailure(Throwable e) {
-                    Log.i(TAG, "fetchPlaceDetailsFollowingGeneralPlaceInfo API CALL FAILURE");
-
-                }
-
-                @Override
-                public void noResults() {
-                    Log.i(TAG, "fetchPlaceDetailsFollowingGeneralPlaceInfo NO RESULTS");
-
-                }
-            });
+            SearchRequest searchRequest = new SearchRequest(latLng, "restaurants", "thai", "40");
+            mViewModel.search(searchRequest);
             //pass event to view model
         }
     }
@@ -176,67 +153,4 @@ public class ResultsActivity extends AppCompatActivity {
         //TODO: cancel search
     }
 
-    private static Observable<List<PlaceIdentifier>> fetchGeneralInfoOfPlaces(SearchRequest searchRequest){
-        RESTService restService = RESTClient.getClient().create(RESTService.class);
-        return restService.getPlaces(searchRequest.getLatlng().toString(), searchRequest.getKeyword(),
-                searchRequest.getType(), searchRequest.getRadius(), searchRequest.getApiKey())
-                .flatMap(x -> Flowable.just(x.getResults()))
-                .subscribeOn(Schedulers.io())
-                .toObservable()
-                .timeout(15, TimeUnit.SECONDS);
-    }
-
-    private static Observable<PlaceResponse> fetchPlaceDetailData(String placeID){
-        PlaceDetailRequest detailRequest = new PlaceDetailRequest(placeID);
-        RESTService restService = RESTClient.getClient().create(RESTService.class);
-        return restService.getPlaceDetails(detailRequest.getPlaceID(),detailRequest.getFields(), detailRequest.getApiKey())
-                .subscribeOn(Schedulers.io())
-                .toObservable()
-                .timeout(10, TimeUnit.SECONDS);
-    }
-
-    public void fetchPlaceDetailsFollowingGeneralPlaceInfo(SearchRequest searchRequest, final RequestListener callback) {
-        fetchGeneralInfoOfPlaces(searchRequest)
-                .flatMapIterable(new Function<List<PlaceIdentifier>, Iterable<PlaceIdentifier>>() {
-                    @Override
-                    public Iterable<PlaceIdentifier> apply(List<PlaceIdentifier> results) throws Exception {
-                        return results;
-                    }
-                })
-                .flatMap(x -> fetchPlaceDetailData(x.getPlaceId()))
-                .toList()
-                .toObservable()
-                .subscribeOn(Schedulers.io())
-                .timeout(10, TimeUnit.SECONDS)
-                .subscribe(new io.reactivex.Observer<List<PlaceResponse>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        Log.i(TAG, "fetchPlaceDetailsFollowingGeneralPlaceInfo onSubscribe");
-                    }
-
-                    @Override
-                    public void onNext(List<PlaceResponse> place) {
-                        if(!place.toString().equals("[]")) {
-                            callback.onResultsFound(place);
-                        } else {
-                            callback.noResults();
-                        }
-                        Log.i(TAG, "fetchPlaceDetailsFollowingGeneralPlaceInfo onNext" + place.toString());
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.i(TAG, "fetchPlaceDetailsFollowingGeneralPlaceInfo onError" + e.getMessage());
-                        callback.onApiCallFailure(e);
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.i(TAG, "ViewModel onComplete");
-
-                    }
-                });
-    }
 }

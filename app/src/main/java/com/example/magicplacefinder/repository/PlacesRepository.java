@@ -42,7 +42,7 @@ public class PlacesRepository {
     //TODO: if i were to do this again, i would extract the "status" attribute part way through this method, if poss
     private static Observable<List<PlaceIdentifier>> fetchGeneralInfoOfPlaces(SearchRequest searchRequest){
         RESTService restService = RESTClient.getClient().create(RESTService.class);
-        return restService.getPlaces(searchRequest.getLatlng().toString(), searchRequest.getKeyword(),
+        return restService.getPlaces(searchRequest.getLatlng(), searchRequest.getKeyword(),
                 searchRequest.getType(), searchRequest.getRadius(), searchRequest.getApiKey())
                 .flatMap(x -> Flowable.just(x.getResults()))
                 .subscribeOn(Schedulers.io())
