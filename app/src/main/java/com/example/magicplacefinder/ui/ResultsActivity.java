@@ -2,37 +2,26 @@ package com.example.magicplacefinder.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.TextView;
-
 import com.example.magicplacefinder.R;
 import com.example.magicplacefinder.models.LatLng;
-import com.example.magicplacefinder.models.PlaceDetailRequest;
 import com.example.magicplacefinder.models.SearchRequest;
 import com.example.magicplacefinder.models.SearchState;
-import com.example.magicplacefinder.models.responses.PlaceIdentifier;
 import com.example.magicplacefinder.models.responses.PlaceResponse;
 
-import com.example.magicplacefinder.network.RESTClient;
-import com.example.magicplacefinder.network.RESTService;
-import com.example.magicplacefinder.repository.PlacesRepository;
 import com.example.magicplacefinder.utils.Constants;
-import com.example.magicplacefinder.utils.RequestListener;
 import com.example.magicplacefinder.viewmodel.PlacesViewModel;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Flowable;
-import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 
 
 public class ResultsActivity extends AppCompatActivity {
@@ -61,8 +50,14 @@ public class ResultsActivity extends AppCompatActivity {
             shouldSearch = getIntent().getBooleanExtra(Constants.BEGIN_SEARCH, false);
         }
 
-        Log.i(TAG, "mViewModel = " + mViewModel);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
+        Log.i(TAG, "mViewModel = " + mViewModel);
     }
 
     @Override
@@ -150,7 +145,17 @@ public class ResultsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        //TODO: cancel search
+        //TODO: cancel search by using Disposable subscriber in Repository
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            //TODO: cancel search by using Disposable subscriber in Repository
+            finish(); // close this activity and return to preview activity (if there is any)
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

@@ -25,7 +25,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent openResultsActivity = new Intent(SearchActivity.this, ResultsActivity.class);
-                openResultsActivity.putExtra(Constants.BEGIN_SEARCH, true);
+                openResultsActivity.putExtra(Constants.BEGIN_SEARCH, false);
                 //TODO: add bundle with search parameters
                 startActivity(openResultsActivity);
             }
