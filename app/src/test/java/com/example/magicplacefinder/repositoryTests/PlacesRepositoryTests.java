@@ -1,29 +1,31 @@
 package com.example.magicplacefinder.repositoryTests;
 
 import com.example.magicplacefinder.BaseTest;
-import com.example.magicplacefinder.network.RESTClient;
 import com.example.magicplacefinder.network.RESTService;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.example.magicplacefinder.repository.PlacesRepository;
 
+import org.junit.Rule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
-import okhttp3.OkHttpClient;
-import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PlacesRepositoryTests extends BaseTest {
 
     MockWebServer mockServer;
     RESTService restService;
+    @Mock
+    PlacesRepository placesRepository;
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @BeforeEach
     void setUp() {
-        Gson gson = new GsonBuilder()
+    /*    Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
 
@@ -42,16 +44,35 @@ public class PlacesRepositoryTests extends BaseTest {
             mockServer.start();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        }
+        }*/
+    }
+
+    @Test
+    void testApiService_correctReponse_returnTrue() {
+
+    }
+
+    @Test
+    void fetchGeneralInfoPlacesMethod_correctReponseType_returnTrue() {
+
+    }
+
+    @Test
+    void fetchPlaceDetailDataMethod_correctReponseType_returnTrue() {
+
+    }
+
+    @Test
+    void fetchPlaceDetailsFollowingGeneralPlaceInfoMethod_noException_returnTrue() {
     }
 
 
     @AfterEach
     void tearDown() {
-        try {
+       /* try {
             mockServer.shutdown();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        }
+        }*/
     }
 }
