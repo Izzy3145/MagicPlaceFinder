@@ -9,10 +9,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.example.magicplacefinder.BuildConfig;
 import com.example.magicplacefinder.R;
 import com.example.magicplacefinder.models.LatLng;
-import com.example.magicplacefinder.models.SearchEntry;
+import com.example.magicplacefinder.models.SearchRequest;
 import com.example.magicplacefinder.models.responses.NearbyResponse;
 import com.example.magicplacefinder.network.RESTClient;
 import com.example.magicplacefinder.network.RESTService;
@@ -64,10 +63,10 @@ public class ResultsActivity extends AppCompatActivity {
         super.onResume();
         if(shouldSearch){
             LatLng latLng = new LatLng(50.3755, 4.1427);
-            SearchEntry searchEntry = new SearchEntry(latLng, "Shop", "Surf", "5");
+            SearchRequest searchRequest = new SearchRequest(latLng, "Shop", "Surf", "5");
             RESTService restService = RESTClient.getClient().create(RESTService.class);
-            restService.getPlaces(searchEntry.getLatlng().toString(), searchEntry.getType(), searchEntry.getKeyword(),
-                    searchEntry.getRadius(), searchEntry.getApiKey())
+            /*restService.getPlaces(searchRequest.getLatlng().toString(), searchRequest.getType(), searchRequest.getKeyword(),
+                    searchRequest.getRadius(), searchRequest.getApiKey())
                     .enqueue(new Callback<NearbyResponse>() {
                         @Override
                         public void onResponse(Call<NearbyResponse> call, Response<NearbyResponse> response) {
@@ -81,7 +80,7 @@ public class ResultsActivity extends AppCompatActivity {
                         public void onFailure(Call<NearbyResponse> call, Throwable t) {
                             Log.i(TAG, "onFailure successful");
                         }
-                    });
+                    });*/
             //pass event to view model
 
         }
