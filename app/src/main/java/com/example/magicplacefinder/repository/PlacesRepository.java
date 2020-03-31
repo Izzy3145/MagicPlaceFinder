@@ -6,4 +6,5 @@ public class PlacesRepository {
 
     private static final String TAG = PlacesRepository.class.getSimpleName();
 
+
 }

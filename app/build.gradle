@@ -58,15 +58,23 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation("com.squareup.okhttp3:logging-interceptor:4.2.1")
 
+    //AndroidX Test
+    def androidx_test_version = "1.2.0"
+    androidTestImplementation "androidx.test:core:$androidx_test_version"
+    androidTestImplementation "androidx.test:runner:$androidx_test_version"
+
+    // JUnit5 for local unit tests
+    def junit_jupiter_version = "5.6.1"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$junit_jupiter_version"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:$junit_jupiter_version"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit_jupiter_version"
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.4.0")
 
 
+    // Mockito
+    def mockito_version = "3.3.0"
+    testImplementation "org.mockito:mockito-core:$mockito_version"
 
+    //JUnit4 for instrumentation tests
     testImplementation 'junit:junit:4.12'
-
-
-
-
-
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }

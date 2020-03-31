@@ -1,28 +1,9 @@
-package com.example.magicplacefinder.models;
+package com.example.magicplacefinder.models.responses;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
-public class NearbyResponse {
-
-    @SerializedName("results")
-    @Expose
-    private List<Result> results = null;
-
-    public NearbyResponse(List<Result> results) {
-        this.results = results;
-    }
-
-    public NearbyResponse() {
-    }
-
-    public List<Result> getResults() {
-        return results;
-    }
-
-    public class Result{
+public class PlaceIdentifier {
         @SerializedName("id")
         @Expose
         private String id;
@@ -33,13 +14,13 @@ public class NearbyResponse {
         @Expose
         private String placeId;
 
-        public Result(String id, String name, String placeId) {
+        public PlaceIdentifier(String id, String name, String placeId) {
             this.id = id;
             this.name = name;
             this.placeId = placeId;
         }
 
-        public Result() {
+        public PlaceIdentifier() {
         }
 
         public String getId() {
@@ -53,5 +34,4 @@ public class NearbyResponse {
         public String getPlaceId() {
             return placeId;
         }
-    }
 }

@@ -1,6 +1,6 @@
 package com.example.magicplacefinder.network;
 
-import com.example.magicplacefinder.models.NearbyResponse;
+import com.example.magicplacefinder.models.responses.NearbyResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -11,5 +11,5 @@ public interface RESTService {
     @GET("nearbysearch/json")
     Call<NearbyResponse> getPlaces(@Query("location") String location, @Query("type") String type,
                                    @Query("keyword") String keyword,
-                                   @Query("rankby") String rankby, @Query("key") String key);
+                                   @Query("radius") String radius, @Query("key") String key);
 }

@@ -1,5 +1,7 @@
 package com.example.magicplacefinder.models;
 
+import androidx.annotation.Nullable;
+
 import org.apache.commons.lang3.StringUtils;
 
 public class LatLng {
@@ -31,4 +33,17 @@ public class LatLng {
     @Override public String toString() {
         return StringUtils.join(lat, ",", lng);
     }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if(obj == null){
+            return false;
+        }
+        if(getClass() != obj.getClass()){
+            return false;
+        }
+        LatLng latLng = (LatLng) obj;
+        return latLng.getLat() == getLat() && latLng.getLng() == getLng();
+    }
+
 }

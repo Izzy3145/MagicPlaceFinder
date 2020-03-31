@@ -26,7 +26,11 @@ public class RESTClient {
                 Log.i("OkHttp error: ", message);
             }
         });
-        logging.level(HttpLoggingInterceptor.Level.BASIC);
+        if(BuildConfig.DEBUG) {
+            logging.level(HttpLoggingInterceptor.Level.BASIC);
+        } else {
+            logging.level(HttpLoggingInterceptor.Level.NONE);
+        }
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(logging)
                 .build();

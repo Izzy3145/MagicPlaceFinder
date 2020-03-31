@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -13,7 +12,8 @@ import android.widget.TextView;
 import com.example.magicplacefinder.BuildConfig;
 import com.example.magicplacefinder.R;
 import com.example.magicplacefinder.models.LatLng;
-import com.example.magicplacefinder.models.NearbyResponse;
+import com.example.magicplacefinder.models.SearchEntry;
+import com.example.magicplacefinder.models.responses.NearbyResponse;
 import com.example.magicplacefinder.network.RESTClient;
 import com.example.magicplacefinder.network.RESTService;
 import com.example.magicplacefinder.utils.Constants;
@@ -64,8 +64,10 @@ public class ResultsActivity extends AppCompatActivity {
         super.onResume();
         if(shouldSearch){
             LatLng latLng = new LatLng(50.3755, 4.1427);
+            SearchEntry searchEntry = new SearchEntry(latLng, "Shop", "Surf", "5");
             RESTService restService = RESTClient.getClient().create(RESTService.class);
-            restService.getPlaces(latLng.toString(), "shop", "surf", "distance", BuildConfig.PLACES_API_KEY)
+            restService.getPlaces(searchEntry.getLatlng().toString(), searchEntry.getType(), searchEntry.getKeyword(),
+                    searchEntry.getRadius(), searchEntry.getApiKey())
                     .enqueue(new Callback<NearbyResponse>() {
                         @Override
                         public void onResponse(Call<NearbyResponse> call, Response<NearbyResponse> response) {
