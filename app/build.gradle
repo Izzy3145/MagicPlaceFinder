@@ -21,8 +21,6 @@ android {
     def props = new Properties()
     file("secret.keys").withInputStream { props.load(it) }
     def PLACES_API_KEY = props.getProperty("placesAPIKey")
-    def MAPS_API_KEY = props.getProperty("mapsAPIKey")
-
 
     buildTypes {
 
@@ -30,8 +28,6 @@ android {
             applicationIdSuffix ".debug"
             buildConfigField "String", "ROOT_URL", "\"https://maps.googleapis.com/maps/api/place/\""
             buildConfigField "String", "PLACES_API_KEY", PLACES_API_KEY
-            resValue "string", "MAPS_API_KEY", MAPS_API_KEY
-
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
