@@ -15,10 +15,13 @@ import com.example.magicplacefinder.R;
 import com.example.magicplacefinder.models.LatLng;
 import com.example.magicplacefinder.models.SearchRequest;
 import com.example.magicplacefinder.utils.Constants;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final String TAG = SearchActivity.class.getSimpleName();
     FloatingActionButton searchButton;
@@ -28,7 +31,7 @@ public class SearchActivity extends AppCompatActivity {
     EditText typeEntry;
     EditText keywordEntry;
     ConstraintLayout rootLayout;
-
+    GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,10 @@ public class SearchActivity extends AppCompatActivity {
         if (getSupportActionBar() != null){
             getSupportActionBar().setTitle(R.string.app_name);
         }
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
     private void launchResultsIfNoEmptyFields(){
@@ -89,5 +96,10 @@ public class SearchActivity extends AppCompatActivity {
 
     private boolean isNoEntry(EditText entryBox){
         return entryBox.getText().toString().equals("") || TextUtils.isEmpty(entryBox.getText().toString());
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
     }
 }
