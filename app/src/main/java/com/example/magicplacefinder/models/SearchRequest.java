@@ -2,21 +2,21 @@ package com.example.magicplacefinder.models;
 
 import com.example.magicplacefinder.BuildConfig;
 
-public class SearchEntry {
+public class SearchRequest {
     LatLng latlng;
     String type;
     String keyword;
     String radius;
     final String apiKey = BuildConfig.PLACES_API_KEY;
 
-    public SearchEntry(LatLng latlng, String type, String keyword, String radius) {
+    public SearchRequest(LatLng latlng, String type, String keyword, String radius) {
         this.latlng = latlng;
         this.type = type;
         this.keyword = keyword;
         this.radius = radius;
     }
 
-    public SearchEntry() {
+    public SearchRequest() {
     }
 
     public LatLng getLatlng() {

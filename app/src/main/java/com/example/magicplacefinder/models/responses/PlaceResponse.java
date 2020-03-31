@@ -28,7 +28,7 @@ public class PlaceResponse {
         private OpeningHours openingHours;
         @SerializedName("rating")
         @Expose
-        private Integer rating;
+        private Double rating;
 
         public String getName() {
             return name;
@@ -46,11 +46,11 @@ public class PlaceResponse {
             this.openingHours = openingHours;
         }
 
-        public Integer getRating() {
+        public Double getRating() {
             return rating;
         }
 
-        public void setRating(Integer rating) {
+        public void setRating(Double rating) {
             this.rating = rating;
         }
 
