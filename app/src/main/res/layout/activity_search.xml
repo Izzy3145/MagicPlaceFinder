@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/search_root"
     tools:context=".ui.SearchActivity">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
@@ -17,17 +19,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-
-
-
     <LinearLayout
         android:id="@+id/search_entires_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,26 +36,29 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Latitude: " />
+                android:text="@string/latitude" />
 
             <EditText
                 android:id="@+id/lat_et"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="50.43242"
+                android:hint="@string/lat_hint"
+                android:inputType="numberSigned|numberDecimal"
                 tools:layout_editor_absoluteX="11dp"
                 tools:layout_editor_absoluteY="160dp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text="Longitude: " />
+                android:text="@string/longitude" />
 
             <EditText
                 android:id="@+id/lon_et"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="-5.87532"
+                android:hint="@string/lng_hint"
+                android:inputType="numberSigned|numberDecimal"
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="304dp" />
         </LinearLayout>
@@ -72,13 +73,15 @@
                 android:id="@+id/radius_label1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="radius (km): " />
+                android:text="@string/radius_label" />
 
             <EditText
                 android:id="@+id/radius_et"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="32" />
+                android:hint="@string/radius_hint"
+                android:inputType="number" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -90,15 +93,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Type: " />
+                android:text="@string/type_label" />
 
             <EditText
                 android:id="@+id/type_et"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="e.g. lodge" />
+                android:hint="@string/type_hint"
+                android:inputType="text" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -108,13 +113,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Keyword: " />
+                android:text="@string/keyword_label" />
 
             <EditText
                 android:id="@+id/keyword_et"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="e.g. surf" />
+                android:hint="@string/keyword_hint"
+                android:inputType="text" />
 
         </LinearLayout>
 
@@ -122,9 +128,11 @@
             android:id="@+id/search_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
             android:layout_gravity="center_horizontal"
-            android:text="@string/search" />
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/colorAccent"
+            android:text="@string/search"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
 

@@ -27,9 +27,14 @@ import java.util.List;
 public class ResultsActivity extends AppCompatActivity {
 
     private static final String TAG = ResultsActivity.class.getSimpleName();
+    private static final String CURRENT_SEARCH = "Current search";
+    private static final String CURRENT_LATLNG = "Current latlng";
+
     PlacesViewModel mViewModel;
     TextView resultsTv;
     boolean shouldSearch = false;
+    SearchRequest currentSearchCritera;
+    LatLng currentLatLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +51,14 @@ public class ResultsActivity extends AppCompatActivity {
         }).get(PlacesViewModel.class);
 
 
+
         if(getIntent() != null){
             shouldSearch = getIntent().getBooleanExtra(Constants.BEGIN_SEARCH, false);
+            currentSearchCritera = getIntent().getParcelableExtra(Constants.SEARCH_CRITERIA);
+            currentLatLng = getIntent().getParcelableExtra(Constants.SEARCH_LATLNG);
+        } else if(savedInstanceState !=null){
+            currentSearchCritera = savedInstanceState.getParcelable(CURRENT_SEARCH);
+            currentLatLng = savedInstanceState.getParcelable(CURRENT_LATLNG);
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -57,7 +68,6 @@ public class ResultsActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        Log.i(TAG, "mViewModel = " + mViewModel);
     }
 
     @Override
@@ -66,6 +76,15 @@ public class ResultsActivity extends AppCompatActivity {
         //view model observe results of event, populate view with data
         observeStateChange(mViewModel);
         observeAPICallResults(mViewModel);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(shouldSearch && currentLatLng != null && currentSearchCritera != null){
+            currentSearchCritera.setLatlng(currentLatLng);
+            mViewModel.search(currentSearchCritera);
+        }
     }
 
     private void observeStateChange(ViewModel viewModel){
@@ -120,18 +139,7 @@ public class ResultsActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(shouldSearch){
-            LatLng latLng = new LatLng(51.7073855, -0.6104911);
-            String latLangString = latLng.toString();
-            Log.i(TAG, "Latitude and longitude: " + latLng);
-            SearchRequest searchRequest = new SearchRequest(latLng, "restaurants", "thai", "40");
-            mViewModel.search(searchRequest);
-            //pass event to view model
-        }
-    }
+
 
     @Override
     protected void onStop() {
@@ -158,4 +166,19 @@ public class ResultsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putParcelable(CURRENT_SEARCH, currentSearchCritera);
+        outState.putParcelable(CURRENT_LATLNG, currentLatLng);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        currentSearchCritera = savedInstanceState.getParcelable(CURRENT_SEARCH);
+        currentLatLng = savedInstanceState.getParcelable(CURRENT_LATLNG);
+
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 }
