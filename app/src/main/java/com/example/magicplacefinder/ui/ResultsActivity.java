@@ -2,52 +2,57 @@ package com.example.magicplacefinder.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.TextView;
-
 import com.example.magicplacefinder.R;
+import com.example.magicplacefinder.adapter.PlacesAdapter;
 import com.example.magicplacefinder.models.LatLng;
-import com.example.magicplacefinder.models.PlaceDetailRequest;
 import com.example.magicplacefinder.models.SearchRequest;
 import com.example.magicplacefinder.models.SearchState;
-import com.example.magicplacefinder.models.responses.PlaceIdentifier;
 import com.example.magicplacefinder.models.responses.PlaceResponse;
 
-import com.example.magicplacefinder.network.RESTClient;
-import com.example.magicplacefinder.network.RESTService;
-import com.example.magicplacefinder.repository.PlacesRepository;
 import com.example.magicplacefinder.utils.Constants;
-import com.example.magicplacefinder.utils.RequestListener;
+import com.example.magicplacefinder.utils.DateUtils;
 import com.example.magicplacefinder.viewmodel.PlacesViewModel;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Flowable;
-import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 
 
 public class ResultsActivity extends AppCompatActivity {
 
     private static final String TAG = ResultsActivity.class.getSimpleName();
+    private static final String CURRENT_SEARCH = "Current search";
+    private static final String CURRENT_LATLNG = "Current latlng";
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private PlacesAdapter adapter;
     PlacesViewModel mViewModel;
     TextView resultsTv;
+    TextView resultsSubtitle;
+    SearchRequest currentSearchCritera;
+    LatLng currentLatLng;
     boolean shouldSearch = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
         resultsTv = findViewById(R.id.results_tv);
-
+        recyclerView = findViewById(R.id.places_rv);
+        resultsSubtitle = findViewById(R.id.results_subtitle);
         mViewModel = new ViewModelProvider(this, new ViewModelProvider.Factory() {
             @NonNull
             @Override
@@ -56,14 +61,34 @@ public class ResultsActivity extends AppCompatActivity {
             }
         }).get(PlacesViewModel.class);
 
-
         if(getIntent() != null){
             shouldSearch = getIntent().getBooleanExtra(Constants.BEGIN_SEARCH, false);
+            currentSearchCritera = getIntent().getParcelableExtra(Constants.SEARCH_CRITERIA);
+            currentLatLng = getIntent().getParcelableExtra(Constants.SEARCH_LATLNG);
+        } else if(savedInstanceState !=null){
+            currentSearchCritera = savedInstanceState.getParcelable(CURRENT_SEARCH);
+            currentLatLng = savedInstanceState.getParcelable(CURRENT_LATLNG);
         }
 
-        Log.i(TAG, "mViewModel = " + mViewModel);
+        resultsSubtitle.setText(getResources().getString(R.string.results_subtitle, currentSearchCritera.getType(),
+                currentSearchCritera.getKeyword(), currentSearchCritera.getRadius(), String.valueOf(currentLatLng.getLat()),
+                String.valueOf(currentLatLng.getLng()), DateUtils.dateToString(new Date())));
 
-    }
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle(R.string.results_title);
+        }
+
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        adapter = new PlacesAdapter(this, new ArrayList<PlaceResponse>(0));
+        recyclerView.setAdapter(adapter);
+
+}
 
     @Override
     protected void onStart() {
@@ -71,6 +96,16 @@ public class ResultsActivity extends AppCompatActivity {
         //view model observe results of event, populate view with data
         observeStateChange(mViewModel);
         observeAPICallResults(mViewModel);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(shouldSearch && currentLatLng != null && currentSearchCritera != null){
+            currentSearchCritera.setLatlng(currentLatLng);
+            mViewModel.search(currentSearchCritera);
+            shouldSearch = false;
+        }
     }
 
     private void observeStateChange(ViewModel viewModel){
@@ -122,20 +157,8 @@ public class ResultsActivity extends AppCompatActivity {
     }
 
     private void updateAdapter(List<PlaceResponse> placeResponses){
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(shouldSearch){
-            LatLng latLng = new LatLng(51.7073855, -0.6104911);
-            String latLangString = latLng.toString();
-            Log.i(TAG, "Latitude and longitude: " + latLng);
-            SearchRequest searchRequest = new SearchRequest(latLng, "restaurants", "thai", "40");
-            mViewModel.search(searchRequest);
-            //pass event to view model
-        }
+        ArrayList<PlaceResponse> placesArray = new ArrayList<>(placeResponses);
+        adapter.updateAdapter(placesArray);
     }
 
     @Override
@@ -150,7 +173,32 @@ public class ResultsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        //TODO: cancel search
+        //TODO: cancel search by using Disposable subscriber in Repository
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            //TODO: cancel search by using Disposable subscriber in Repository
+            finish(); // close this activity and return to preview activity (if there is any)
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putParcelable(CURRENT_SEARCH, currentSearchCritera);
+        outState.putParcelable(CURRENT_LATLNG, currentLatLng);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        currentSearchCritera = savedInstanceState.getParcelable(CURRENT_SEARCH);
+        currentLatLng = savedInstanceState.getParcelable(CURRENT_LATLNG);
+
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 }

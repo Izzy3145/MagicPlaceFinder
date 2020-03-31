@@ -1,9 +1,28 @@
 <resources>
     <string name="app_name">Magic Place Finder</string>
     <string name="search">Search</string>
-    <string name="search_title">Search Nearby Places</string>
     <string name="results_title">Search Results</string>
-    <string name="results_subtitle">Showing results for %1$s of type %1$s at lat: %1$s lon: %1$s</string>
+    <string name="results_subtitle">Showing results for %1$s with keyword %2$s within %3$skm of Lat:%4$s Lon:%5$s as at %6$s</string>
+    <string name="enter_lat_value">Please enter a valid latitude value to continue</string>
+    <string name="enter_lng_value">Please enter a valid longitude value to continue</string>
+    <string name="enter_radius_value">Please enter a valid search radius to continue</string>
+    <string name="enter_type_value">Please enter a valid type to continue</string>
+    <string name="enter_keyword_value">Please enter a valid keyword to continue</string>
+    <string name="latitude">Latitude:</string>
+    <string name="lat_hint">50.43242</string>
+    <string name="longitude">Longitude:</string>
+    <string name="lng_hint">-5.87532</string>
+    <string name="radius_label">Radius (km):</string>
+    <string name="radius_hint">32</string>
+    <string name="type_label">Type:</string>
+    <string name="type_hint">e.g. lodge</string>
+    <string name="keyword_label">Keyword:</string>
+    <string name="keyword_hint">e.g. surf</string>
+
+    <string name="name">Name: %1$s</string>
+    <string name="opening_hours">Opening hours: %1$s</string>
+    <string name="rating">Rating: %1$s</string>
+
 
 
 </resources>

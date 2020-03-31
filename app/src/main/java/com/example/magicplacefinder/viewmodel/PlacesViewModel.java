@@ -30,10 +30,10 @@ public class PlacesViewModel extends ViewModel implements RequestListener {
         placesRepository = placesRepository.getInstance();
 
         if(placesList == null){
-            placesList = new MutableLiveData<>(null);
+            placesList = new MutableLiveData<List<PlaceResponse>>();
         }
         if(searchState == null){
-            searchState = new MutableLiveData<>(null);
+            searchState = new MutableLiveData<SearchState>();
         } else {
             searchState.postValue(SearchState.IDLE);
         }
