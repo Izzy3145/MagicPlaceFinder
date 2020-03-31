@@ -1,6 +1,7 @@
 package com.example.magicplacefinder.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
@@ -14,12 +15,13 @@ import com.example.magicplacefinder.R;
 import com.example.magicplacefinder.models.LatLng;
 import com.example.magicplacefinder.models.SearchRequest;
 import com.example.magicplacefinder.utils.Constants;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 public class SearchActivity extends AppCompatActivity {
 
     private static final String TAG = SearchActivity.class.getSimpleName();
-    Button searchButton;
+    FloatingActionButton searchButton;
     EditText latEntry;
     EditText lngEntry;
     EditText radiusEntry;
@@ -41,13 +43,15 @@ public class SearchActivity extends AppCompatActivity {
         keywordEntry = findViewById(R.id.keyword_et);
         rootLayout = findViewById(R.id.search_root);
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                launchResultsIfNoEmptyFields();
+        searchButton.setOnClickListener((View v) -> {
+            launchResultsIfNoEmptyFields();});
 
-            }
-        });
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.searchToolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle(R.string.app_name);
+        }
     }
 
     private void launchResultsIfNoEmptyFields(){

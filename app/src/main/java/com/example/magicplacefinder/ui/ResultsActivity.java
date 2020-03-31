@@ -21,9 +21,11 @@ import com.example.magicplacefinder.models.SearchState;
 import com.example.magicplacefinder.models.responses.PlaceResponse;
 
 import com.example.magicplacefinder.utils.Constants;
+import com.example.magicplacefinder.utils.DateUtils;
 import com.example.magicplacefinder.viewmodel.PlacesViewModel;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -38,6 +40,7 @@ public class ResultsActivity extends AppCompatActivity {
     private PlacesAdapter adapter;
     PlacesViewModel mViewModel;
     TextView resultsTv;
+    TextView resultsSubtitle;
     SearchRequest currentSearchCritera;
     LatLng currentLatLng;
     boolean shouldSearch = false;
@@ -49,6 +52,7 @@ public class ResultsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_results);
         resultsTv = findViewById(R.id.results_tv);
         recyclerView = findViewById(R.id.places_rv);
+        resultsSubtitle = findViewById(R.id.results_subtitle);
         mViewModel = new ViewModelProvider(this, new ViewModelProvider.Factory() {
             @NonNull
             @Override
@@ -56,8 +60,6 @@ public class ResultsActivity extends AppCompatActivity {
                 return (T) new PlacesViewModel();
             }
         }).get(PlacesViewModel.class);
-
-
 
         if(getIntent() != null){
             shouldSearch = getIntent().getBooleanExtra(Constants.BEGIN_SEARCH, false);
@@ -68,11 +70,16 @@ public class ResultsActivity extends AppCompatActivity {
             currentLatLng = savedInstanceState.getParcelable(CURRENT_LATLNG);
         }
 
+        resultsSubtitle.setText(getResources().getString(R.string.results_subtitle, currentSearchCritera.getType(),
+                currentSearchCritera.getKeyword(), currentSearchCritera.getRadius(), String.valueOf(currentLatLng.getLat()),
+                String.valueOf(currentLatLng.getLng()), DateUtils.dateToString(new Date())));
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle(R.string.results_title);
         }
 
         layoutManager = new LinearLayoutManager(this);
@@ -97,6 +104,7 @@ public class ResultsActivity extends AppCompatActivity {
         if(shouldSearch && currentLatLng != null && currentSearchCritera != null){
             currentSearchCritera.setLatlng(currentLatLng);
             mViewModel.search(currentSearchCritera);
+            shouldSearch = false;
         }
     }
 
