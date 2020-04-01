@@ -2,6 +2,8 @@ package com.example.magicplacefinder.modelTests;
 
 import com.example.magicplacefinder.models.GPSCoords;
 
+import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -37,5 +39,25 @@ public class GPSCoordsObjTest {
         Pattern special = Pattern.compile ("[!@#$%&*()_+=|<>?{}\\[\\]~-]");
         Matcher hasSpecial = special.matcher(GPSCoords1.toString());
         assertFalse(hasSpecial.find());
+    }
+
+    @Test
+    void latLngToString_ofCorrectFormat_returnTrue() {
+        String expectedResult = "50.352252,-6.783242";
+        GPSCoords coordsInput = new GPSCoords(50.352252, -6.783242);
+
+        String actualResult = coordsInput.toString();
+
+        Assertions.assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    void latLngToString_ofIncorrectFormat_returnFalse() {
+        String expectedResult = "50.352252%C6783242";
+        GPSCoords coordsInput = new GPSCoords(50.352252, -6783242);
+
+        String actualResult = coordsInput.toString();
+
+        Assertions.assertNotEquals(expectedResult, actualResult);
     }
 }
