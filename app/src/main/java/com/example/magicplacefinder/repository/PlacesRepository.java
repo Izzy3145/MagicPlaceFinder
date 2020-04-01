@@ -32,15 +32,13 @@ public class PlacesRepository {
     private PlacesRepository() {
     }
 
-    public synchronized static PlacesRepository getInstance(){
+    public static PlacesRepository getInstance(){
         if(instance == null){
             instance = new PlacesRepository();
         }
         return instance;
     }
 
-
-    //TODO: if i were to do this again, i would extract the "status" attribute part way through this method, if poss
     private static Observable<List<PlaceIdentifier>> fetchGeneralInfoOfPlaces(SearchRequest searchRequest){
         RESTService restService = RESTClient.getClient().create(RESTService.class);
         return restService.getPlaces(searchRequest.getLatlng(), searchRequest.getKeyword(),

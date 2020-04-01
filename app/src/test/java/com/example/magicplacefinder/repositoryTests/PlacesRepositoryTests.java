@@ -9,6 +9,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
@@ -25,30 +26,19 @@ public class PlacesRepositoryTests extends BaseTest {
 
     @BeforeEach
     void setUp() {
-    /*    Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
-        OkHttpClient client = new OkHttpClient.Builder()
-                .build();
-
-        restService =  new Retrofit.Builder()
-                .baseUrl(mockServer.url("/"))
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(client)
-                .build()
-                .create(RESTService.class);
+        MockitoAnnotations.initMocks(this);
 
         mockServer = new MockWebServer();
         try {
             mockServer.start();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        }*/
+        }
     }
 
     @Test
     void testApiService_correctReponse_returnTrue() {
+        //How to create fake response?
 
     }
 
@@ -69,10 +59,10 @@ public class PlacesRepositoryTests extends BaseTest {
 
     @AfterEach
     void tearDown() {
-       /* try {
+        try {
             mockServer.shutdown();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        }*/
+        }
     }
 }

@@ -38,7 +38,7 @@ public class PlacesViewModel extends ViewModel implements RequestListener {
     }
 
     public void search(SearchRequest searchRequest){
-        searchState.postValue(SearchState.SEARCHING);
+        postSearchState(SearchState.SEARCHING);
         placesRepository.fetchPlaceDetailsFollowingGeneralPlaceInfo(searchRequest, this);
     }
 
@@ -50,15 +50,18 @@ public class PlacesViewModel extends ViewModel implements RequestListener {
         return searchState;
     }
 
+    public void postSearchState(SearchState state){
+        searchState.postValue(state);
+    }
     @Override
     public void onResultsFound(List<PlaceResponse> results) {
-        searchState.postValue(SearchState.RESULTS_FOUND);
+        postSearchState(SearchState.RESULTS_FOUND);
         placesList.postValue(results);
     }
 
     @Override
     public void onApiCallFailure(Throwable e) {
-        searchState.postValue(SearchState.FAILED_API_CALL);
+        postSearchState(SearchState.FAILED_API_CALL);
     }
 
     @Override

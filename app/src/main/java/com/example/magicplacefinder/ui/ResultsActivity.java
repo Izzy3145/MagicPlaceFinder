@@ -190,15 +190,8 @@ public class ResultsActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        //TODO: cancel search by using Disposable subscriber in Repository
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            //TODO: cancel search by using Disposable subscriber in Repository
             finish();
         }
         return super.onOptionsItemSelected(item);
