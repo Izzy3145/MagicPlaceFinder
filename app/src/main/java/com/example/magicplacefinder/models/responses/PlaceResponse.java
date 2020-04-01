@@ -10,6 +10,7 @@ import java.util.List;
 public class PlaceResponse {
 
     private List<Object> htmlAttributions = null;
+
     @SerializedName("result")
     @Expose
     private Result result;
@@ -34,36 +35,23 @@ public class PlaceResponse {
             return name;
         }
 
-        public void setName(String name) {
-            this.name = name;
-        }
-
         public OpeningHours getOpeningHours() {
             return openingHours;
-        }
-
-        public void setOpeningHours(OpeningHours openingHours) {
-            this.openingHours = openingHours;
         }
 
         public Double getRating() {
             return rating;
         }
 
-        public void setRating(Double rating) {
-            this.rating = rating;
-        }
 
     }
 
-    class OpeningHours {
+    public class OpeningHours {
 
         @SerializedName("open_now")
         @Expose
         private Boolean openNow;
-        @SerializedName("periods")
-        @Expose
-        private List<Period> periods = null;
+
         @SerializedName("weekday_text")
         @Expose
         private List<String> weekdayText = null;
@@ -72,106 +60,8 @@ public class PlaceResponse {
             return openNow;
         }
 
-        public void setOpenNow(Boolean openNow) {
-            this.openNow = openNow;
-        }
-
-        public List<Period> getPeriods() {
-            return periods;
-        }
-
-        public void setPeriods(List<Period> periods) {
-            this.periods = periods;
-        }
-
         public List<String> getWeekdayText() {
             return weekdayText;
-        }
-
-        public void setWeekdayText(List<String> weekdayText) {
-            this.weekdayText = weekdayText;
-        }
-
-    }
-
-    class Period {
-
-        @SerializedName("close")
-        @Expose
-        private Close close;
-        @SerializedName("open")
-        @Expose
-        private Open open;
-
-        public Close getClose() {
-            return close;
-        }
-
-        public void setClose(Close close) {
-            this.close = close;
-        }
-
-        public Open getOpen() {
-            return open;
-        }
-
-        public void setOpen(Open open) {
-            this.open = open;
-        }
-
-    }
-
-
-    class Open {
-
-        @SerializedName("day")
-        @Expose
-        private Integer day;
-        @SerializedName("time")
-        @Expose
-        private String time;
-
-        public Integer getDay() {
-            return day;
-        }
-
-        public void setDay(Integer day) {
-            this.day = day;
-        }
-
-        public String getTime() {
-            return time;
-        }
-
-        public void setTime(String time) {
-            this.time = time;
-        }
-
-    }
-
-    class Close {
-
-        @SerializedName("day")
-        @Expose
-        private Integer day;
-        @SerializedName("time")
-        @Expose
-        private String time;
-
-        public Integer getDay() {
-            return day;
-        }
-
-        public void setDay(Integer day) {
-            this.day = day;
-        }
-
-        public String getTime() {
-            return time;
-        }
-
-        public void setTime(String time) {
-            this.time = time;
         }
 
     }
