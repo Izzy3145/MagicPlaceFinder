@@ -82,7 +82,7 @@ public class ResultsActivity extends AppCompatActivity {
                 currentSearchCritera.getKeyword(), currentSearchCritera.getRadius(), String.valueOf(currentGPSCoords.getLat()),
                 String.valueOf(currentGPSCoords.getLng()), DateUtils.dateToString(new Date())));
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -135,7 +135,6 @@ public class ResultsActivity extends AppCompatActivity {
                             progressBar.setVisibility(View.GONE);
                             noResultsTv.setVisibility(View.VISIBLE);
                             noResultsTv.setText(getResources().getString(R.string.no_results_found_dialog));
-                            //resultsTv.setText(getResources().getString(R.string.no_results_found_dialog));
                             resultsFoundViews.setVisibility(View.GONE);
                             Log.i(TAG, "Current state: NO_RESULTS");
                             break;
@@ -198,10 +197,9 @@ public class ResultsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
             //TODO: cancel search by using Disposable subscriber in Repository
-            finish(); // close this activity and return to preview activity (if there is any)
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }

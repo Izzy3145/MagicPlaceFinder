@@ -74,7 +74,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             checkInternetAndProceed();});
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.searchToolbar);
+        Toolbar toolbar = findViewById(R.id.searchToolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null){
             getSupportActionBar().setTitle(R.string.app_name);
@@ -192,8 +192,6 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             }
             return;
         }
-
-        //findCurrentLatLng();
     }
 
     private void requestLocationPermission(){
@@ -203,7 +201,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == 1) {
             waitingLocationPermission = false;
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

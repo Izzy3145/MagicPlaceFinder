@@ -27,7 +27,7 @@ public class PlacesViewModel extends ViewModel implements RequestListener {
     }
 
     void init(){
-        placesRepository = placesRepository.getInstance();
+        placesRepository = PlacesRepository.getInstance();
 
         if(placesList == null){
             placesList = new MutableLiveData<List<PlaceResponse>>();
