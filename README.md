@@ -15,5 +15,5 @@ This project uses the Google Places API and the Gooogle Maps API to retrieve dat
 7) Clone the repository
 8) Create a new properties file named "sercret.keys" in /**/MagicPlaceFinder/app/
 9) Enter two lines:
-        placesAPIKey="YOUR_PLACES_API_KEY"
-        mapsAPIKey="YOUR_MAPS_API_KEY"
+placesAPIKey="YOUR_PLACES_API_KEY"
+mapsAPIKey="YOUR_MAPS_API_KEY"
