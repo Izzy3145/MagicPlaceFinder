@@ -197,6 +197,11 @@ public class ResultsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
