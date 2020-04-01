@@ -1,3 +1,43 @@
 <resources>
-    <string name="app_name">MagicPlaceFinder</string>
+    <string name="app_name">Magic Place Finder</string>
+    <string name="search">Search</string>
+    <string name="results_title">Search Results</string>
+    <string name="results_subtitle">Showing results for %1$s with keyword %2$s within %3$skm of Lat:%4$s Lon:%5$s as at %6$s</string>
+    <string name="enter_lat_value">Please enter a valid latitude value to continue</string>
+    <string name="enter_lng_value">Please enter a valid longitude value to continue</string>
+    <string name="enter_radius_value">Please enter a valid search radius to continue</string>
+    <string name="enter_type_value">Please enter a valid type to continue</string>
+    <string name="enter_keyword_value">Please enter a valid keyword to continue</string>
+    <string name="latitude">Lat:</string>
+    <string name="lat_hint">50.432429</string>
+    <string name="longitude">Long:</string>
+    <string name="lng_hint">-5.875325</string>
+    <string name="radius_label">Radius (km):</string>
+    <string name="radius_hint">32</string>
+    <string name="type_label">Type:</string>
+    <string name="type_hint">e.g. lodge</string>
+    <string name="keyword_label">Keyword:</string>
+    <string name="keyword_hint">e.g. surf</string>
+
+    <string name="name">%1$s</string>
+    <string name="opening_hours">Opening hours: %1$s</string>
+    <string name="rating">Rating: %1$s</string>
+    <string name="unavailable"><i>unavailable</i></string>
+    <string name="default_radius">5</string>
+    <string name="find_current_location">Find current location</string>
+    <string name="or_enter">or \nenter:</string>
+    <string name="radius_too_big">Radius cannot be bigger than 50km. Please enter a smaller radius.</string>
+    <string name="no_results_found_dialog">There are no places that match your criteria :-(\n\nPlease change your criteria and try again.</string>
+    <string name="failed_api_call_dialog">Oops, something went wrong with your request :-(\n\nCPlease check your internet connection and search criteria, and try again.</string>
+    <string name="please_connect">Please connect to the internet before conducting a search.</string>
+    <string name="ok">OK</string>
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+
+
 </resources>
