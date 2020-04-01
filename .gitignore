@@ -1,7 +1,6 @@
 *.iml
 .gradle
 app/secret.keys
-app/src/main/res/values/google_maps_api.xml
 /local.properties
 /.idea/caches
 /.idea/libraries
