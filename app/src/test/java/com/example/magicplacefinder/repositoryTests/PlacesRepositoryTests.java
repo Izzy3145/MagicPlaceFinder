@@ -28,30 +28,17 @@ public class PlacesRepositoryTests extends BaseTest {
     void setUp() {
         MockitoAnnotations.initMocks(this);
 
-    /*    Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
-        OkHttpClient client = new OkHttpClient.Builder()
-                .build();
-
-        restService =  new Retrofit.Builder()
-                .baseUrl(mockServer.url("/"))
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(client)
-                .build()
-                .create(RESTService.class);
-
         mockServer = new MockWebServer();
         try {
             mockServer.start();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        }*/
+        }
     }
 
     @Test
     void testApiService_correctReponse_returnTrue() {
+        //How to create fake response?
 
     }
 
@@ -72,10 +59,10 @@ public class PlacesRepositoryTests extends BaseTest {
 
     @AfterEach
     void tearDown() {
-       /* try {
+        try {
             mockServer.shutdown();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        }*/
+        }
     }
 }
