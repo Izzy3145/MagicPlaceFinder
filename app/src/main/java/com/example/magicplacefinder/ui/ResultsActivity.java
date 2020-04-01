@@ -18,7 +18,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.example.magicplacefinder.R;
-import com.example.magicplacefinder.adapter.PlacesAdapter;
+import com.example.magicplacefinder.adapters.PlacesAdapter;
 import com.example.magicplacefinder.models.GPSCoords;
 import com.example.magicplacefinder.models.SearchRequest;
 import com.example.magicplacefinder.models.SearchState;
