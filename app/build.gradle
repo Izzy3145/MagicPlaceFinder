@@ -20,8 +20,8 @@ android {
 
     def props = new Properties()
     file("secret.keys").withInputStream { props.load(it) }
-    def PLACES_API_KEY = props.getProperty("placesAPIKey")
-
+    def PLACES_API_KEY = props.getProperty("placesAPIKey")?: ""
+    def MAPS_API_KEY = props.getProperty("mapsAPIKey")?: ""
 
 
     buildTypes {
@@ -30,6 +30,7 @@ android {
             applicationIdSuffix ".debug"
             buildConfigField "String", "ROOT_URL", "\"https://maps.googleapis.com/maps/api/place/\""
             buildConfigField "String", "PLACES_API_KEY", PLACES_API_KEY
+            resValue "string", "google_maps_key", MAPS_API_KEY
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -37,6 +38,7 @@ android {
         release {
             buildConfigField "String", "ROOT_URL", "\"https://maps.googleapis.com/maps/api/place/\""
             buildConfigField "String", "PLACES_API_KEY", PLACES_API_KEY
+            resValue "string", "google_maps_key", MAPS_API_KEY
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -51,7 +53,9 @@ dependencies {
     implementation 'android.arch.lifecycle:extensions:1.1.1'
     implementation 'org.apache.commons:commons-lang3:3.9'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-
+    implementation 'com.google.android.gms:play-services-base:17.2.1'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
 
     //rest service and gson converter
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'

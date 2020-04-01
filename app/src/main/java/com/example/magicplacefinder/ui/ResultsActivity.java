@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import com.example.magicplacefinder.R;
 import com.example.magicplacefinder.adapter.PlacesAdapter;
-import com.example.magicplacefinder.models.LatLng;
+import com.example.magicplacefinder.models.GPSCoords;
 import com.example.magicplacefinder.models.SearchRequest;
 import com.example.magicplacefinder.models.SearchState;
 import com.example.magicplacefinder.models.responses.PlaceResponse;
@@ -35,6 +35,8 @@ public class ResultsActivity extends AppCompatActivity {
     private static final String TAG = ResultsActivity.class.getSimpleName();
     private static final String CURRENT_SEARCH = "Current search";
     private static final String CURRENT_LATLNG = "Current latlng";
+    private static final String SHOULD_SEARCH = "Should search";
+
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private PlacesAdapter adapter;
@@ -42,7 +44,7 @@ public class ResultsActivity extends AppCompatActivity {
     TextView resultsTv;
     TextView resultsSubtitle;
     SearchRequest currentSearchCritera;
-    LatLng currentLatLng;
+    GPSCoords currentGPSCoords;
     boolean shouldSearch = false;
 
 
@@ -64,15 +66,16 @@ public class ResultsActivity extends AppCompatActivity {
         if(getIntent() != null){
             shouldSearch = getIntent().getBooleanExtra(Constants.BEGIN_SEARCH, false);
             currentSearchCritera = getIntent().getParcelableExtra(Constants.SEARCH_CRITERIA);
-            currentLatLng = getIntent().getParcelableExtra(Constants.SEARCH_LATLNG);
+            currentGPSCoords = getIntent().getParcelableExtra(Constants.SEARCH_LATLNG);
         } else if(savedInstanceState !=null){
             currentSearchCritera = savedInstanceState.getParcelable(CURRENT_SEARCH);
-            currentLatLng = savedInstanceState.getParcelable(CURRENT_LATLNG);
+            currentGPSCoords = savedInstanceState.getParcelable(CURRENT_LATLNG);
+            shouldSearch = savedInstanceState.getBoolean(SHOULD_SEARCH);
         }
 
         resultsSubtitle.setText(getResources().getString(R.string.results_subtitle, currentSearchCritera.getType(),
-                currentSearchCritera.getKeyword(), currentSearchCritera.getRadius(), String.valueOf(currentLatLng.getLat()),
-                String.valueOf(currentLatLng.getLng()), DateUtils.dateToString(new Date())));
+                currentSearchCritera.getKeyword(), currentSearchCritera.getRadius(), String.valueOf(currentGPSCoords.getLat()),
+                String.valueOf(currentGPSCoords.getLng()), DateUtils.dateToString(new Date())));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -101,8 +104,8 @@ public class ResultsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(shouldSearch && currentLatLng != null && currentSearchCritera != null){
-            currentSearchCritera.setLatlng(currentLatLng);
+        if(shouldSearch && currentGPSCoords != null && currentSearchCritera != null){
+            currentSearchCritera.setLatlng(currentGPSCoords);
             mViewModel.search(currentSearchCritera);
             shouldSearch = false;
         }
@@ -189,16 +192,17 @@ public class ResultsActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelable(CURRENT_SEARCH, currentSearchCritera);
-        outState.putParcelable(CURRENT_LATLNG, currentLatLng);
         super.onSaveInstanceState(outState);
+        outState.putParcelable(CURRENT_SEARCH, currentSearchCritera);
+        outState.putParcelable(CURRENT_LATLNG, currentGPSCoords);
+        outState.putBoolean(SHOULD_SEARCH, shouldSearch);
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        currentSearchCritera = savedInstanceState.getParcelable(CURRENT_SEARCH);
-        currentLatLng = savedInstanceState.getParcelable(CURRENT_LATLNG);
-
         super.onRestoreInstanceState(savedInstanceState);
+        currentSearchCritera = savedInstanceState.getParcelable(CURRENT_SEARCH);
+        currentGPSCoords = savedInstanceState.getParcelable(CURRENT_LATLNG);
+        shouldSearch = savedInstanceState.getBoolean(SHOULD_SEARCH);
     }
 }

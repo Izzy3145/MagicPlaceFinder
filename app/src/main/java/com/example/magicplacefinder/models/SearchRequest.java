@@ -6,14 +6,14 @@ import android.os.Parcelable;
 import com.example.magicplacefinder.BuildConfig;
 
 public class SearchRequest implements Parcelable {
-    LatLng latlng;
+    GPSCoords latlng;
     String radius;
 
     String type;
     String keyword;
     final String apiKey = BuildConfig.PLACES_API_KEY;
 
-    public SearchRequest(LatLng latlng, String radius, String type, String keyword) {
+    public SearchRequest(GPSCoords latlng, String radius, String type, String keyword) {
         this.latlng = latlng;
         this.radius = radius;
         this.type = type;
@@ -29,7 +29,7 @@ public class SearchRequest implements Parcelable {
     public SearchRequest() {
     }
 
-    public LatLng getLatlng() {
+    public GPSCoords getLatlng() {
         return latlng;
     }
 
@@ -45,7 +45,7 @@ public class SearchRequest implements Parcelable {
         return keyword;
     }
 
-    public void setLatlng(LatLng latlng) {
+    public void setLatlng(GPSCoords latlng) {
         this.latlng = latlng;
     }
 

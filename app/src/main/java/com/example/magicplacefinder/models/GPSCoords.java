@@ -7,12 +7,12 @@ import androidx.annotation.Nullable;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class LatLng implements Parcelable {
+public class GPSCoords implements Parcelable {
 
     private double lat;
     private double lng;
 
-    public LatLng(double lat, double lng) {
+    public GPSCoords(double lat, double lng) {
         this.lat = lat;
         this.lng = lng;
     }
@@ -45,8 +45,8 @@ public class LatLng implements Parcelable {
         if(getClass() != obj.getClass()){
             return false;
         }
-        LatLng latLng = (LatLng) obj;
-        return latLng.getLat() == getLat() && latLng.getLng() == getLng();
+        GPSCoords GPSCoords = (GPSCoords) obj;
+        return GPSCoords.getLat() == getLat() && GPSCoords.getLng() == getLng();
     }
 
     @Override
@@ -60,19 +60,19 @@ public class LatLng implements Parcelable {
         parcel.writeDouble(lng);
     }
 
-    private LatLng(Parcel in){
+    private GPSCoords(Parcel in){
         lat = in.readDouble();
         lng = in.readDouble();
     }
     public static final Creator CREATOR = new Creator() {
         @Override
-        public LatLng createFromParcel(Parcel parcel) {
-            return new LatLng(parcel);
+        public GPSCoords createFromParcel(Parcel parcel) {
+            return new GPSCoords(parcel);
         }
 
         @Override
-        public LatLng[] newArray(int i) {
-            return new LatLng[i];
+        public GPSCoords[] newArray(int i) {
+            return new GPSCoords[i];
         }
     };
 }

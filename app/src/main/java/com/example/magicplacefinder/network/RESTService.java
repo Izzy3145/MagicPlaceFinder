@@ -1,6 +1,6 @@
 package com.example.magicplacefinder.network;
 
-import com.example.magicplacefinder.models.LatLng;
+import com.example.magicplacefinder.models.GPSCoords;
 import com.example.magicplacefinder.models.responses.NearbyResponse;
 import com.example.magicplacefinder.models.responses.PlaceResponse;
 
@@ -11,7 +11,7 @@ import retrofit2.http.Query;
 public interface RESTService {
 
     @GET("nearbysearch/json")
-    Flowable<NearbyResponse> getPlaces(@Query(value = "location", encoded = true) LatLng location, @Query("type") String type,
+    Flowable<NearbyResponse> getPlaces(@Query(value = "location", encoded = true) GPSCoords location, @Query("type") String type,
                                        @Query("keyword") String keyword,
                                        @Query("radius") String radius, @Query("key") String key);
 

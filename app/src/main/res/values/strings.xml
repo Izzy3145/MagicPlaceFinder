@@ -8,10 +8,10 @@
     <string name="enter_radius_value">Please enter a valid search radius to continue</string>
     <string name="enter_type_value">Please enter a valid type to continue</string>
     <string name="enter_keyword_value">Please enter a valid keyword to continue</string>
-    <string name="latitude">Latitude:</string>
-    <string name="lat_hint">50.43242</string>
-    <string name="longitude">Longitude:</string>
-    <string name="lng_hint">-5.87532</string>
+    <string name="latitude">Lat:</string>
+    <string name="lat_hint">50.432429</string>
+    <string name="longitude">Long:</string>
+    <string name="lng_hint">-5.875325</string>
     <string name="radius_label">Radius (km):</string>
     <string name="radius_hint">32</string>
     <string name="type_label">Type:</string>
@@ -22,7 +22,10 @@
     <string name="name">Name: %1$s</string>
     <string name="opening_hours">Opening hours: %1$s</string>
     <string name="rating">Rating: %1$s</string>
-
+    <string name="default_radius">5</string>
+    <string name="find_current_location">Find current location</string>
+    <string name="or_enter">or \nenter:</string>
+    <string name="radius_too_big">Radius cannot be bigger than 50km. Please enter a smaller radius.</string>
 
 
 </resources>
