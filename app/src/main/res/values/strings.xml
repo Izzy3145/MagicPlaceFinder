@@ -19,13 +19,17 @@
     <string name="keyword_label">Keyword:</string>
     <string name="keyword_hint">e.g. surf</string>
 
-    <string name="name">Name: %1$s</string>
+    <string name="name">%1$s</string>
     <string name="opening_hours">Opening hours: %1$s</string>
     <string name="rating">Rating: %1$s</string>
     <string name="default_radius">5</string>
     <string name="find_current_location">Find current location</string>
     <string name="or_enter">or \nenter:</string>
     <string name="radius_too_big">Radius cannot be bigger than 50km. Please enter a smaller radius.</string>
+    <string name="no_results_found_dialog">There are no places that match your criteria :-(\n\nPlease change your criteria and try again.</string>
+    <string name="failed_api_call_dialog">Oops, something went wrong with your request :-(\n\nCPlease check your internet connection and search criteria, and try again.</string>
+    <string name="please_connect">Please connect to the internet before conducting a search.</string>
+    <string name="ok">OK</string>
 
 
 </resources>

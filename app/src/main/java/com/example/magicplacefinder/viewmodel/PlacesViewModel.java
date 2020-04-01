@@ -34,8 +34,6 @@ public class PlacesViewModel extends ViewModel implements RequestListener {
         }
         if(searchState == null){
             searchState = new MutableLiveData<SearchState>();
-        } else {
-            searchState.postValue(SearchState.IDLE);
         }
     }
 

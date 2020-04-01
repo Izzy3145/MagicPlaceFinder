@@ -1,17 +1,20 @@
 package com.example.magicplacefinder.ui;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -20,7 +23,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.example.magicplacefinder.R;
 import com.example.magicplacefinder.models.GPSCoords;
@@ -38,7 +40,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.Map;
+
 
 public class SearchActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -59,25 +61,17 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     Circle mapCircle;
     boolean waitingLocationPermission = false;
     boolean currentLocationFound = false;
+    boolean isConnectedToInternet = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-
-        searchButton = findViewById(R.id.search_button);
-        latEntry = findViewById(R.id.lat_et);
-        lngEntry = findViewById(R.id.lon_et);
-        radiusEntry = findViewById(R.id.radius_et);
-        typeEntry = findViewById(R.id.type_et);
-        keywordEntry = findViewById(R.id.keyword_et);
-        rootLayout = findViewById(R.id.search_root);
-        findLocation = findViewById(R.id.find_location_btn);
-
+        findViews();
         searchButton.setOnClickListener((View v) -> {
             hideKeyboard(this);
-            launchResultsIfNoEmptyFields();});
+            checkInternetAndProceed();});
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.searchToolbar);
@@ -113,6 +107,29 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         });
     }
 
+    private void checkInternetAndProceed(){
+        isConnectedToInternet = isNetworkAvailable(this);
+        if(isConnectedToInternet){
+            launchResultsIfNoEmptyFields();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(getResources().getString(R.string.please_connect));
+            builder.setCancelable(false);
+            builder.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                  dialog.dismiss();
+                }
+            });
+            builder.create().show();
+        }
+    }
+
+    public boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
+    }
+
     private void launchResultsIfNoEmptyFields(){
         if(isNoEntry(latEntry)){
             Snackbar snackbar = Snackbar
@@ -137,16 +154,20 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                     .make(rootLayout, getResources().getString(R.string.enter_keyword_value), Snackbar.LENGTH_LONG);
             snackbar.show();
         } else {
-            SearchRequest newSearch = new SearchRequest(radiusEntry.getText().toString().trim(),
-                    typeEntry.getText().toString().trim(), keywordEntry.getText().toString().trim());
-            GPSCoords newGPSCoords = new GPSCoords(Double.valueOf(latEntry.getText().toString().trim()),
-                    Double.valueOf(lngEntry.getText().toString().trim()));
-            Intent openResultsActivity = new Intent(SearchActivity.this, ResultsActivity.class);
-            openResultsActivity.putExtra(Constants.BEGIN_SEARCH, true);
-            openResultsActivity.putExtra(Constants.SEARCH_CRITERIA, newSearch);
-            openResultsActivity.putExtra(Constants.SEARCH_LATLNG, newGPSCoords);
-            startActivity(openResultsActivity);
+            openResultsActivity();
         }
+    }
+
+    private void openResultsActivity(){
+        SearchRequest newSearch = new SearchRequest(radiusEntry.getText().toString().trim(),
+                typeEntry.getText().toString().trim(), keywordEntry.getText().toString().trim());
+        GPSCoords newGPSCoords = new GPSCoords(Double.valueOf(latEntry.getText().toString().trim()),
+                Double.valueOf(lngEntry.getText().toString().trim()));
+        Intent openResultsActivity = new Intent(SearchActivity.this, ResultsActivity.class);
+        openResultsActivity.putExtra(Constants.BEGIN_SEARCH, true);
+        openResultsActivity.putExtra(Constants.SEARCH_CRITERIA, newSearch);
+        openResultsActivity.putExtra(Constants.SEARCH_LATLNG, newGPSCoords);
+        startActivity(openResultsActivity);
     }
 
     private void showRadiusTooLargeSnackbar(){
@@ -243,5 +264,16 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             }
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    private void findViews(){
+        searchButton = findViewById(R.id.search_button);
+        latEntry = findViewById(R.id.lat_et);
+        lngEntry = findViewById(R.id.lon_et);
+        radiusEntry = findViewById(R.id.radius_et);
+        typeEntry = findViewById(R.id.type_et);
+        keywordEntry = findViewById(R.id.keyword_et);
+        rootLayout = findViewById(R.id.search_root);
+        findLocation = findViewById(R.id.find_location_btn);
     }
 }

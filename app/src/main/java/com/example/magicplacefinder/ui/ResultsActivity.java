@@ -3,15 +3,19 @@ package com.example.magicplacefinder.ui;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.Group;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.example.magicplacefinder.R;
 import com.example.magicplacefinder.adapter.PlacesAdapter;
@@ -39,10 +43,13 @@ public class ResultsActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
+    private Group resultsFoundViews;
+    private ProgressBar progressBar;
     private PlacesAdapter adapter;
     PlacesViewModel mViewModel;
     TextView resultsTv;
     TextView resultsSubtitle;
+    TextView noResultsTv;
     SearchRequest currentSearchCritera;
     GPSCoords currentGPSCoords;
     boolean shouldSearch = false;
@@ -52,9 +59,7 @@ public class ResultsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
-        resultsTv = findViewById(R.id.results_tv);
-        recyclerView = findViewById(R.id.places_rv);
-        resultsSubtitle = findViewById(R.id.results_subtitle);
+        findViews();
         mViewModel = new ViewModelProvider(this, new ViewModelProvider.Factory() {
             @NonNull
             @Override
@@ -85,9 +90,12 @@ public class ResultsActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(R.string.results_title);
         }
 
-        layoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
+        DividerItemDecoration   mDividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(mDividerItemDecoration);
         adapter = new PlacesAdapter(this, new ArrayList<PlaceResponse>(0));
         recyclerView.setAdapter(adapter);
 
@@ -97,8 +105,8 @@ public class ResultsActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         //view model observe results of event, populate view with data
-        observeStateChange(mViewModel);
-        observeAPICallResults(mViewModel);
+        observeStateChange();
+        observeAPICallResults();
     }
 
     @Override
@@ -111,35 +119,44 @@ public class ResultsActivity extends AppCompatActivity {
         }
     }
 
-    private void observeStateChange(ViewModel viewModel){
+    private void observeStateChange(){
         mViewModel.getSearchState().observe(this, new Observer<SearchState>() {
             @Override
             public void onChanged(SearchState searchState) {
                 if(searchState != null){
                     switch(searchState) {
-                        case IDLE:
-                            Log.i(TAG, "observeStateChange = IDLE");
-                            //TODO
-                            break;
                         case SEARCHING:
-                            Log.i(TAG, "observeStateChange = SEARCHING");
-                            //TODO
+                            progressBar.setVisibility(View.VISIBLE);
+                            noResultsTv.setVisibility(View.GONE);
+                            resultsFoundViews.setVisibility(View.GONE);
+                            Log.i(TAG, "Current state: SEARCHING");
                             break;
                         case NO_RESULTS:
-                            Log.i(TAG, "observeStateChange = NO_RESULTS");
-                            //TODO
+                            progressBar.setVisibility(View.GONE);
+                            noResultsTv.setVisibility(View.VISIBLE);
+                            noResultsTv.setText(getResources().getString(R.string.no_results_found_dialog));
+                            //resultsTv.setText(getResources().getString(R.string.no_results_found_dialog));
+                            resultsFoundViews.setVisibility(View.GONE);
+                            Log.i(TAG, "Current state: NO_RESULTS");
                             break;
                         case FAILED_API_CALL:
-                            Log.i(TAG, "observeStateChange = FAILED_API_CALL");
-                            //TODO
+                            progressBar.setVisibility(View.GONE);
+                            noResultsTv.setVisibility(View.VISIBLE);
+                            noResultsTv.setText(getResources().getString(R.string.failed_api_call_dialog));
+                            resultsFoundViews.setVisibility(View.GONE);
+                            Log.i(TAG, "Current state: FAILED_API_CALL");
                             break;
                         case RESULTS_FOUND:
-                            Log.i(TAG, "observeStateChange = RESULTS_FOUND");
-                            //TODO
+                            progressBar.setVisibility(View.GONE);
+                            noResultsTv.setVisibility(View.GONE);
+                            resultsFoundViews.setVisibility(View.VISIBLE);
+                            Log.i(TAG, "Current state: RESULTS_FOUND");
+
                             break;
                         default:
-                            Log.i(TAG, "observeStateChange = DEFAULT");
-                            //TODO same as idle
+                            progressBar.setVisibility(View.GONE);
+                            noResultsTv.setVisibility(View.VISIBLE);
+                            resultsFoundViews.setVisibility(View.GONE);
                             break;
                     }
                 }
@@ -147,7 +164,7 @@ public class ResultsActivity extends AppCompatActivity {
         });
     }
 
-    private void observeAPICallResults(ViewModel viewModel){
+    private void observeAPICallResults(){
         mViewModel.getResults().observe(this, new Observer<List<PlaceResponse>>() {
             @Override
             public void onChanged(List<PlaceResponse> placeResponses) {
@@ -204,5 +221,20 @@ public class ResultsActivity extends AppCompatActivity {
         currentSearchCritera = savedInstanceState.getParcelable(CURRENT_SEARCH);
         currentGPSCoords = savedInstanceState.getParcelable(CURRENT_LATLNG);
         shouldSearch = savedInstanceState.getBoolean(SHOULD_SEARCH);
+    }
+
+    private void findViews(){
+        resultsTv = findViewById(R.id.results_tv);
+        recyclerView = findViewById(R.id.places_rv);
+        resultsSubtitle = findViewById(R.id.results_subtitle);
+        resultsFoundViews = findViewById(R.id.results_group);
+        progressBar = findViewById(R.id.progressBar);
+        noResultsTv = findViewById(R.id.no_results_tv);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        noResultsTv.setText("");
     }
 }
