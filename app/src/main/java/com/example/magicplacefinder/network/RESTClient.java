@@ -24,11 +24,11 @@ public class RESTClient {
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override public void log(String message) {
-                Log.i("OkHttp error: ", message);
+                Log.i("OkHttp response: ", message);
             }
         });
         if(BuildConfig.DEBUG) {
-            logging.level(HttpLoggingInterceptor.Level.BASIC);
+            logging.level(HttpLoggingInterceptor.Level.BODY);
         } else {
             logging.level(HttpLoggingInterceptor.Level.NONE);
         }

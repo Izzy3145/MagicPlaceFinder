@@ -13,6 +13,7 @@ import com.example.magicplacefinder.network.RESTService;
 import com.example.magicplacefinder.ui.ResultsActivity;
 import com.example.magicplacefinder.utils.RequestListener;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -85,7 +86,8 @@ public class PlacesRepository {
                         } else {
                             callback.noResults();
                         }
-                        Log.i(TAG, "fetchPlaceDetailsFollowingGeneralPlaceInfo onNext" + place.toString());
+                        ArrayList<PlaceResponse> responses = new ArrayList<>(place);
+                        Log.i(TAG, "fetchPlaceDetailsFollowingGeneralPlaceInfo onNext");
 
                     }
 

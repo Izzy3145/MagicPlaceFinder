@@ -90,7 +90,7 @@ public class ResultsActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(R.string.results_title);
         }
 
-        layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+        layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         DividerItemDecoration   mDividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),

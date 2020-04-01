@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:text="@string/name"
         android:textStyle="bold"
-        android:textSize="@dimen/text_subtitle"
+        android:textSize="@dimen/text_title"
         android:layout_marginBottom="4dp"
         tools:text="Name" />
 
@@ -31,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/rating"
+            android:textSize="@dimen/text_subtitle"
             tools:text="Rating: " />
 
         <RatingBar
@@ -59,13 +60,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/openinghrs_rv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_constraintTop_toBottomOf="@id/rating_ll"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="4dp" />
-
-
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

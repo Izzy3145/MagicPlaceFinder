@@ -22,7 +22,6 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
     private ArrayList<PlaceResponse> mListOfPlaces;
     private Context mContext;
 
-    //construct a constructor that takes a list of recipeItems
     public PlacesAdapter(Context c, ArrayList<PlaceResponse> listOfRecipes) {
         mListOfPlaces = listOfRecipes;
         mContext = c;
@@ -30,10 +29,8 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
 
     @Override
     public PlacesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // inflate the item Layout
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.places_list_item, parent,
                 false);
-        //pass the view to the ViewHolder
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -44,25 +41,31 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
         holder.nameTv.setText(showUnavailableOrAvailableData(place.getResult().getName(),
                 mContext.getResources().getString(R.string.name, place.getResult().getName())));
         if(place.getResult().getOpeningHours() != null){
-            holder.openingHrsTv.setText(mContext.getResources().
-                    getString(R.string.opening_hours, place.getResult().getOpeningHours()));
+            holder.openingHrsRv.setVisibility(View.VISIBLE);
+            holder.openingHrsTv.setVisibility(View.GONE);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+            holder.openingHrsRv.setLayoutManager(layoutManager);
+            holder.openingHrsRv.setHasFixedSize(true);
+            ArrayList<String> weekdayStrings = new ArrayList<>(place.getResult().getOpeningHours().getWeekdayText());
+            OpeningTimesAdapter adapter = new OpeningTimesAdapter(mContext, weekdayStrings);
+            holder.openingHrsRv.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
         } else {
-            holder.openingHrsTv.setText(mContext.getResources().getString(R.string.unavailable));
+            holder.openingHrsRv.setVisibility(View.GONE);
+            holder.openingHrsTv.setVisibility(View.VISIBLE);
+            holder.openingHrsTv.setText(mContext.getResources().getString(R.string.opening_hours,
+                    mContext.getResources().getString(R.string.unavailable)));
         }
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
-        holder.openingHrsRv.setLayoutManager(layoutManager);
-        holder.openingHrsRv.setHasFixedSize(true);
-        OpeningTimesAdapter adapter = new OpeningTimesAdapter(mContext, place.getResult());
-        holder.openingHrsRv.setAdapter(adapter);
-        adapter.setOpeningTimeData(place.getResult());
 
-        holder.ratingTv.setText(showUnavailableOrAvailableData(String.valueOf(place.getResult().getRating()),
-                mContext.getResources().getString(R.string.name, String.valueOf(place.getResult().getRating()))));
         if(place.getResult().getRating() != null) {
+            holder.ratingTv.setText(showUnavailableOrAvailableData(String.valueOf(place.getResult().getRating()),
+                    mContext.getResources().getString(R.string.name, String.valueOf(place.getResult().getRating()))));
             holder.ratingBar.setRating(place.getResult().getRating().floatValue());
             holder.ratingBar.setVisibility(View.VISIBLE);
         } else {
+            holder.ratingTv.setText(mContext.getResources().getString(R.string.rating,
+                    mContext.getResources().getString(R.string.unavailable)));
             holder.ratingBar.setVisibility(View.GONE);
         }
     }
@@ -85,8 +88,6 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
         }
     }
 
-
-    //create viewholder class
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView nameTv;
         TextView openingHrsTv;
