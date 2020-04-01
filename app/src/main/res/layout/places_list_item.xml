@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/rating"
-            android:textSize="@dimen/text_subtitle"
+            android:textSize="@dimen/text_title"
             tools:text="Rating: " />
 
         <RatingBar
@@ -51,9 +51,10 @@
         android:id="@+id/openinghrs_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/name_tv"
+        app:layout_constraintTop_toBottomOf="@id/rating_ll"
         android:text="@string/opening_hours"
         android:layout_marginBottom="4dp"
+        android:textSize="@dimen/text_subtitle"
         android:visibility="gone"
         tools:text="Opening hours" />
 
