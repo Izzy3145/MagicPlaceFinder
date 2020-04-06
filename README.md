@@ -13,7 +13,7 @@ This project uses the Google Places API and the Gooogle Maps API to retrieve dat
 6) Within the project, get a Google Maps API Key https://developers.google.com/maps/documentation/android-sdk/get-api-key
 5) Restrict the key to the Google Maps API only
 7) Clone the repository
-8) Create a new properties file named "sercret.keys" in /**/MagicPlaceFinder/app/
+8) Create a new properties file named "secret.keys" in /**/MagicPlaceFinder/app/
 9) Enter two lines:\
         placesAPIKey="YOUR_PLACES_API_KEY"\
         mapsAPIKey="YOUR_MAPS_API_KEY"
